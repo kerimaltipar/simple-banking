@@ -1,6 +1,5 @@
-package com.eteration.simplebanking;
+package com.eteration.simplebanking.controller;
 
-import com.eteration.simplebanking.controller.BankAccountController;
 import com.eteration.simplebanking.dto.BankAccountDTO;
 import com.eteration.simplebanking.dto.TransactionRequestDTO;
 import com.eteration.simplebanking.dto.TransactionResponseDTO;
