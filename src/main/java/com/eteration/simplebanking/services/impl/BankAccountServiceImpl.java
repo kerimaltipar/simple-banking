@@ -3,7 +3,7 @@ package com.eteration.simplebanking.services.impl;
 import com.eteration.simplebanking.dto.BankAccountDTO;
 import com.eteration.simplebanking.dto.TransactionRequestDTO;
 import com.eteration.simplebanking.dto.TransactionResponseDTO;
-import com.eteration.simplebanking.exception.InsufficientBalanceException;
+import com.eteration.simplebanking.exception.NegativeAmountException;
 import com.eteration.simplebanking.mapper.BankAccountMapper;
 import com.eteration.simplebanking.model.BankAccount;
 import com.eteration.simplebanking.model.DepositTransaction;
@@ -31,6 +31,9 @@ public class BankAccountServiceImpl implements BankAccountService {
 
     @Override
     public TransactionResponseDTO processDeposit(String accountNumber, TransactionRequestDTO requestDTO) {
+        if (requestDTO.getAmount() <= 0) {
+            throw new NegativeAmountException("You can't deposit zero or negative amount!");
+        }
         BankAccount account = getBankAccountByNumber(accountNumber);
         DepositTransaction deposit = new DepositTransaction(requestDTO.getAmount(), account);
         deposit.post();
@@ -43,7 +46,7 @@ public class BankAccountServiceImpl implements BankAccountService {
     }
 
     @Override
-    public TransactionResponseDTO processWithdrawal(String accountNumber, TransactionRequestDTO requestDTO) throws InsufficientBalanceException {
+    public TransactionResponseDTO processWithdrawal(String accountNumber, TransactionRequestDTO requestDTO) {
         BankAccount account = getBankAccountByNumber(accountNumber);
         WithdrawalTransaction withdrawal = new WithdrawalTransaction(requestDTO.getAmount(), account);
         withdrawal.post();

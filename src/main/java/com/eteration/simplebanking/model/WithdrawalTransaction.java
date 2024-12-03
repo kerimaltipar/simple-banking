@@ -1,6 +1,5 @@
 package com.eteration.simplebanking.model;
 
-import com.eteration.simplebanking.exception.InsufficientBalanceException;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.DiscriminatorValue;
@@ -16,7 +15,7 @@ public class WithdrawalTransaction extends Transaction {
     }
 
     @Override
-    public void post() throws InsufficientBalanceException {
+    public void post() {
         getAccount().debit(getAmount());
     }
 }

@@ -1,6 +1,5 @@
 package com.eteration.simplebanking.model;
 
-import com.eteration.simplebanking.exception.InsufficientBalanceException;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -39,5 +38,5 @@ public abstract class Transaction {
         this.date = new Date();
     }
 
-    public abstract void post() throws InsufficientBalanceException;
+    public abstract void post();
 }

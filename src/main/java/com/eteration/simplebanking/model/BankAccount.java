@@ -42,7 +42,7 @@ public class BankAccount {
         }
     }
 
-    public void debit(double amount) throws InsufficientBalanceException {
+    public void debit(double amount) {
         if (amount > 0 && this.balance >= amount) {
             this.balance -= amount;
         } else {
