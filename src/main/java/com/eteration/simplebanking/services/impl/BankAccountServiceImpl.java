@@ -31,6 +31,10 @@ public class BankAccountServiceImpl implements BankAccountService {
 
     @Override
     public TransactionResponseDTO processDeposit(String accountNumber, TransactionRequestDTO requestDTO) {
+        // If a throw exception here rather than credit method in BankAccount class
+        // like I did in debit method in BankAccount class
+        // It saves performance by not doing unnecessary db call
+        // And I couldn't use javax validation because I choose to use the same request dto for both services
         if (requestDTO.getAmount() <= 0) {
             throw new NegativeAmountException("You can't deposit zero or negative amount!");
         }
