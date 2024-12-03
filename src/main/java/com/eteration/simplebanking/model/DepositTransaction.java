@@ -1,6 +1,16 @@
 package com.eteration.simplebanking.model;
 
+import javax.persistence.Entity;
 
-// This class is a place holder you can change the complete implementation
-public class DepositTransaction {
+@Entity
+public class DepositTransaction extends Transaction {
+
+    public DepositTransaction(double amount, BankAccount bankAccount) {
+        super(amount, bankAccount);
+    }
+
+    @Override
+    public void post() {
+        getAccount().credit(getAmount());
+    }
 }

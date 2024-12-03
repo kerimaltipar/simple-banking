@@ -1,7 +1,7 @@
 package com.eteration.simplebanking;
 
-import com.eteration.simplebanking.controller.AccountController;
-import com.eteration.simplebanking.services.AccountService;
+import com.eteration.simplebanking.controller.BankAccountController;
+import com.eteration.simplebanking.services.BankAccountService;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Spy;
@@ -16,10 +16,10 @@ class ControllerTests {
 
     @Spy
     @InjectMocks
-    private AccountController controller;
+    private BankAccountController controller;
 
     @Mock
-    private AccountService service;
+    private BankAccountService service;
 
 
 /*    @Test
