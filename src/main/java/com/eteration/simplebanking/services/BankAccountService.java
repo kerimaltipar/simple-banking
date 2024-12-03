@@ -1,13 +1,13 @@
 package com.eteration.simplebanking.services;
 
+import com.eteration.simplebanking.dto.BankAccountDTO;
 import com.eteration.simplebanking.dto.TransactionRequestDTO;
 import com.eteration.simplebanking.dto.TransactionResponseDTO;
 import com.eteration.simplebanking.exception.InsufficientBalanceException;
-import com.eteration.simplebanking.model.BankAccount;
 
 public interface BankAccountService {
 
-    BankAccount getAccountByNumber(String accountNumber);
+    BankAccountDTO getBankAccountDTOByNumber(String accountNumber);
 
     TransactionResponseDTO processWithdrawal(String accountNumber, TransactionRequestDTO requestDTO) throws InsufficientBalanceException;
 

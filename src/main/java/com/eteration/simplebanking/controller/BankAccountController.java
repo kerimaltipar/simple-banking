@@ -1,9 +1,9 @@
 package com.eteration.simplebanking.controller;
 
+import com.eteration.simplebanking.dto.BankAccountDTO;
 import com.eteration.simplebanking.dto.TransactionRequestDTO;
 import com.eteration.simplebanking.dto.TransactionResponseDTO;
 import com.eteration.simplebanking.exception.InsufficientBalanceException;
-import com.eteration.simplebanking.model.BankAccount;
 import com.eteration.simplebanking.services.BankAccountService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -16,8 +16,8 @@ public class BankAccountController {
     private final BankAccountService bankAccountService;
 
     @GetMapping("v1/{accountNumber}")
-    public BankAccount getAccount(@PathVariable String accountNumber) {
-        return bankAccountService.getAccountByNumber(accountNumber);
+    public BankAccountDTO getAccount(@PathVariable String accountNumber) {
+        return bankAccountService.getBankAccountDTOByNumber(accountNumber);
     }
 
     @PostMapping("v1/credit/{accountNumber}")

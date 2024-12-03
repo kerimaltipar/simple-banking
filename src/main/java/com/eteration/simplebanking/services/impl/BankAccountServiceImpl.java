@@ -1,8 +1,10 @@
 package com.eteration.simplebanking.services.impl;
 
+import com.eteration.simplebanking.dto.BankAccountDTO;
 import com.eteration.simplebanking.dto.TransactionRequestDTO;
 import com.eteration.simplebanking.dto.TransactionResponseDTO;
 import com.eteration.simplebanking.exception.InsufficientBalanceException;
+import com.eteration.simplebanking.mapper.BankAccountMapper;
 import com.eteration.simplebanking.model.BankAccount;
 import com.eteration.simplebanking.model.DepositTransaction;
 import com.eteration.simplebanking.model.WithdrawalTransaction;
@@ -20,14 +22,16 @@ public class BankAccountServiceImpl implements BankAccountService {
 
     private final TransactionService transactionService;
 
+    private final BankAccountMapper bankAccountMapper;
+
     @Override
-    public BankAccount getAccountByNumber(String accountNumber) {
-        return bankAccountRepository.findByAccountNumber(accountNumber);
+    public BankAccountDTO getBankAccountDTOByNumber(String accountNumber) {
+        return bankAccountMapper.bankAccountToDTO(getBankAccountByNumber(accountNumber));
     }
 
     @Override
     public TransactionResponseDTO processDeposit(String accountNumber, TransactionRequestDTO requestDTO) {
-        BankAccount account = getAccountByNumber(accountNumber);
+        BankAccount account = getBankAccountByNumber(accountNumber);
         DepositTransaction deposit = new DepositTransaction(requestDTO.getAmount(), account);
         deposit.post();
         transactionService.save(deposit);
@@ -40,7 +44,7 @@ public class BankAccountServiceImpl implements BankAccountService {
 
     @Override
     public TransactionResponseDTO processWithdrawal(String accountNumber, TransactionRequestDTO requestDTO) throws InsufficientBalanceException {
-        BankAccount account = getAccountByNumber(accountNumber);
+        BankAccount account = getBankAccountByNumber(accountNumber);
         WithdrawalTransaction withdrawal = new WithdrawalTransaction(requestDTO.getAmount(), account);
         withdrawal.post();
         transactionService.save(withdrawal);
@@ -49,5 +53,9 @@ public class BankAccountServiceImpl implements BankAccountService {
                 .approvalCode(withdrawal.getApprovalCode())
                 .status("OK")
                 .build();
+    }
+
+    private BankAccount getBankAccountByNumber(String accountNumber) {
+        return bankAccountRepository.findByAccountNumber(accountNumber);
     }
 }
