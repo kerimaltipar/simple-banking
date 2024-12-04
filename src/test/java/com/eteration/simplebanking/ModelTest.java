@@ -4,6 +4,7 @@ package com.eteration.simplebanking;
 import com.eteration.simplebanking.exception.InsufficientBalanceException;
 import com.eteration.simplebanking.model.BankAccount;
 import com.eteration.simplebanking.model.DepositTransaction;
+import com.eteration.simplebanking.model.PhoneBillPaymentTransaction;
 import com.eteration.simplebanking.model.WithdrawalTransaction;
 import org.junit.jupiter.api.Test;
 
@@ -41,35 +42,23 @@ class ModelTest {
 
     @Test
     void testWithdrawException() {
-        assertThrows(InsufficientBalanceException.class, () -> {
-            BankAccount account = new BankAccount("Demet Demircan", "9834");
-            DepositTransaction deposit = new DepositTransaction(100, account);
-            deposit.post();
-            WithdrawalTransaction withdrawal = new WithdrawalTransaction(500, account);
-            withdrawal.post();
-        });
+        BankAccount account = new BankAccount("Demet Demircan", "9834");
+        DepositTransaction deposit = new DepositTransaction(100, account);
+        deposit.post();
+        WithdrawalTransaction withdrawal = new WithdrawalTransaction(500, account);
+        assertThrows(InsufficientBalanceException.class, withdrawal::post);
 
     }
 
-//    @Test
-//    void testTransactions() throws InsufficientBalanceException {
-//        // Create account
-//        BankAccount account = new BankAccount("Canan Kaya", "1234");
-//        account.setTransactions(new HashSet<>());
-//        assertEquals(0, account.getTransactions().size());
-//
-//        // Deposit Transaction
-//        DepositTransaction depositTrx = new DepositTransaction(100, account);
-//        assertNotNull(depositTrx.getDate());
-//        depositTrx.post();
-//        assertEquals(100, account.getBalance());
-//        assertEquals(1, account.getTransactions().size());
-//
-//        // Withdrawal Transaction
-//        WithdrawalTransaction withdrawalTrx = new WithdrawalTransaction(60, account);
-//        assertNotNull(withdrawalTrx.getDate());
-//        withdrawalTrx.post();
-//        assertEquals(40, account.getBalance());
-//        assertEquals(2, account.getTransactions().size());
-//    }
+    @Test
+    void providedUnitTest() {
+        BankAccount account = new BankAccount("Jim", "12345");
+        DepositTransaction deposit = new DepositTransaction(1000, account);
+        deposit.post();
+        WithdrawalTransaction withdrawal = new WithdrawalTransaction(200, account);
+        withdrawal.post();
+        PhoneBillPaymentTransaction phoneBillPayment = new PhoneBillPaymentTransaction("Vodafone", "5423345566", 96.50, account);
+        phoneBillPayment.post();
+        assertEquals(703.50, account.getBalance(), 0.0001);
+    }
 }
