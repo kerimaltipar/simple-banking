@@ -1,5 +1,6 @@
 package com.eteration.simplebanking.handler;
 
+import com.eteration.simplebanking.exception.AccountNotFoundException;
 import com.eteration.simplebanking.exception.InsufficientBalanceException;
 import com.eteration.simplebanking.exception.NegativeAmountException;
 import org.springframework.http.HttpStatus;
@@ -12,6 +13,11 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler({InsufficientBalanceException.class, NegativeAmountException.class})
     public ResponseEntity<String> handleMyCustomExceptions(Exception ex) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(AccountNotFoundException.class)
+    public ResponseEntity<String> handleAccountNotFoundException(Exception ex) {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
 

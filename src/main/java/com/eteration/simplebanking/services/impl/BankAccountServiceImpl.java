@@ -3,6 +3,7 @@ package com.eteration.simplebanking.services.impl;
 import com.eteration.simplebanking.dto.BankAccountDTO;
 import com.eteration.simplebanking.dto.TransactionRequestDTO;
 import com.eteration.simplebanking.dto.TransactionResponseDTO;
+import com.eteration.simplebanking.exception.AccountNotFoundException;
 import com.eteration.simplebanking.exception.NegativeAmountException;
 import com.eteration.simplebanking.mapper.BankAccountMapper;
 import com.eteration.simplebanking.model.BankAccount;
@@ -13,6 +14,8 @@ import com.eteration.simplebanking.services.BankAccountService;
 import com.eteration.simplebanking.services.TransactionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -62,7 +65,11 @@ public class BankAccountServiceImpl implements BankAccountService {
     }
 
     private BankAccount getBankAccountByNumber(String accountNumber) {
-        return bankAccountRepository.findByAccountNumber(accountNumber);
+        Optional<BankAccount> bankAccountOptional = bankAccountRepository.findByAccountNumber(accountNumber);
+        if (bankAccountOptional.isEmpty()) {
+            throw new AccountNotFoundException("Account not found!");
+        }
+        return bankAccountOptional.get();
     }
 
     private void validateAmount(double amount, String processType) {
