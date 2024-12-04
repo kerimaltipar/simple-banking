@@ -1,5 +1,6 @@
 package com.eteration.simplebanking.model;
 
+import com.eteration.simplebanking.model.base.Transaction;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.DiscriminatorValue;

@@ -3,7 +3,7 @@ package com.eteration.simplebanking.mapper;
 import com.eteration.simplebanking.dto.BankAccountDTO;
 import com.eteration.simplebanking.dto.TransactionDTO;
 import com.eteration.simplebanking.model.BankAccount;
-import com.eteration.simplebanking.model.Transaction;
+import com.eteration.simplebanking.model.base.Transaction;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;

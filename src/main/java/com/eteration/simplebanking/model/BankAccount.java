@@ -1,6 +1,7 @@
 package com.eteration.simplebanking.model;
 
 import com.eteration.simplebanking.exception.InsufficientBalanceException;
+import com.eteration.simplebanking.model.base.Transaction;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

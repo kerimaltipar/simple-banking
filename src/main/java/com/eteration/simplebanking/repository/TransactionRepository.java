@@ -1,7 +1,7 @@
 package com.eteration.simplebanking.repository;
 
 import com.eteration.simplebanking.model.BankAccount;
-import com.eteration.simplebanking.model.Transaction;
+import com.eteration.simplebanking.model.base.Transaction;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

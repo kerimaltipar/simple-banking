@@ -1,6 +1,6 @@
 package com.eteration.simplebanking.services;
 
-import com.eteration.simplebanking.model.Transaction;
+import com.eteration.simplebanking.model.base.Transaction;
 
 public interface TransactionService {
 
