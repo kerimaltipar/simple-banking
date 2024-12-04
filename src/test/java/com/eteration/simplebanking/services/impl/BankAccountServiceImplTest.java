@@ -3,6 +3,7 @@ package com.eteration.simplebanking.services.impl;
 import com.eteration.simplebanking.dto.BankAccountDTO;
 import com.eteration.simplebanking.dto.TransactionRequestDTO;
 import com.eteration.simplebanking.dto.TransactionResponseDTO;
+import com.eteration.simplebanking.exception.AccountNotFoundException;
 import com.eteration.simplebanking.exception.InsufficientBalanceException;
 import com.eteration.simplebanking.exception.NegativeAmountException;
 import com.eteration.simplebanking.mapper.BankAccountMapper;
@@ -14,6 +15,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -40,12 +43,20 @@ class BankAccountServiceImplTest {
         BankAccount bankAccount = new BankAccount();
         BankAccountDTO expected = new BankAccountDTO();
 
-        when(bankAccountRepository.findByAccountNumber(accountNumber)).thenReturn(bankAccount);
+        when(bankAccountRepository.findByAccountNumber(accountNumber)).thenReturn(Optional.of(bankAccount));
         when(bankAccountMapper.bankAccountToDTO(bankAccount)).thenReturn(expected);
 
         BankAccountDTO actual = bankAccountService.getBankAccountDTOByNumber(accountNumber);
 
         assertEquals(expected, actual);
+    }
+
+    @Test
+    void getBankAccountDTOByNumber_when_accountNumberNotValid_then_throwAccountNotFoundException() {
+        String accountNumber = "123-123";
+        when(bankAccountRepository.findByAccountNumber(accountNumber)).thenReturn(Optional.empty());
+
+        assertThrows(AccountNotFoundException.class, () -> bankAccountService.getBankAccountDTOByNumber(accountNumber));
     }
 
     @Test
@@ -58,7 +69,7 @@ class BankAccountServiceImplTest {
                 .status("OK")
                 .build();
 
-        when(bankAccountRepository.findByAccountNumber(accountNumber)).thenReturn(bankAccount);
+        when(bankAccountRepository.findByAccountNumber(accountNumber)).thenReturn(Optional.of(bankAccount));
 
         TransactionResponseDTO actual = bankAccountService.processDeposit(accountNumber, requestDTO);
 
@@ -89,7 +100,7 @@ class BankAccountServiceImplTest {
                 .status("OK")
                 .build();
 
-        when(bankAccountRepository.findByAccountNumber(accountNumber)).thenReturn(bankAccount);
+        when(bankAccountRepository.findByAccountNumber(accountNumber)).thenReturn(Optional.of(bankAccount));
 
         TransactionResponseDTO actual = bankAccountService.processWithdrawal(accountNumber, requestDTO);
 
@@ -105,7 +116,7 @@ class BankAccountServiceImplTest {
         bankAccount.setBalance(200.0);
         String expectedErrorMessage = "You don't have enough money!";
 
-        when(bankAccountRepository.findByAccountNumber(accountNumber)).thenReturn(bankAccount);
+        when(bankAccountRepository.findByAccountNumber(accountNumber)).thenReturn(Optional.of(bankAccount));
 
         InsufficientBalanceException exception = assertThrows(InsufficientBalanceException.class,
                 () -> bankAccountService.processWithdrawal(accountNumber, requestDTO));
