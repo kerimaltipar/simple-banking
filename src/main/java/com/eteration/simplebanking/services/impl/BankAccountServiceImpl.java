@@ -51,6 +51,9 @@ public class BankAccountServiceImpl implements BankAccountService {
 
     @Override
     public TransactionResponseDTO processWithdrawal(String accountNumber, TransactionRequestDTO requestDTO) {
+        if (requestDTO.getAmount() <= 0) {
+            throw new NegativeAmountException("You can't withdrawal zero or negative amount!");
+        }
         BankAccount account = getBankAccountByNumber(accountNumber);
         WithdrawalTransaction withdrawal = new WithdrawalTransaction(requestDTO.getAmount(), account);
         withdrawal.post();
