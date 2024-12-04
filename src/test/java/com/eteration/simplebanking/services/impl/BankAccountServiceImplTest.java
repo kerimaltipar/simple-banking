@@ -123,4 +123,24 @@ class BankAccountServiceImplTest {
 
         assertEquals(expectedErrorMessage, exception.getMessage());
     }
+
+    @Test
+    void processWithdrawal_when_amountZeroNotValid_then_throwNegativeAmountException() {
+        String accountNumber = "123-4567";
+        TransactionRequestDTO requestDTO = new TransactionRequestDTO();
+        requestDTO.setAmount(0.0);
+
+        assertThrows(NegativeAmountException.class,
+                () -> bankAccountService.processWithdrawal(accountNumber, requestDTO));
+    }
+
+    @Test
+    void processWithdrawal_when_amountNotValid_then_throwNegativeAmountException() {
+        String accountNumber = "123-4567";
+        TransactionRequestDTO requestDTO = new TransactionRequestDTO();
+        requestDTO.setAmount(-10.0);
+
+        assertThrows(NegativeAmountException.class,
+                () -> bankAccountService.processWithdrawal(accountNumber, requestDTO));
+    }
 }
